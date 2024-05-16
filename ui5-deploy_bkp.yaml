@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: panaya.nexa
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: http://10.0.0.166:8000
+        app:
+          name: YGL_NX_PANAYA
+          description: panaya
+          package: ZPGWVMBC_NEXA_UTILS
+          transport: FI1K902846
+        exclude:
+          - /test/

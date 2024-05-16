@@ -1,0 +1,57 @@
+{
+    "general": {
+		"sap.app": {
+			"id": "general",
+			"type": "card"
+		},
+		"sap.card": {
+			"type": "Analytical",
+            "title": "Sample of a Donut Chart",
+			"content": {
+                "actions": [
+                    {
+                        "type": "Custom",
+                        "parameters": {
+                            "method": "onPressCard",
+                            "name": "{name}"
+                        }
+                    }
+                ],
+				"chartType": "Donut",
+				"legend": {
+					"visible": true,
+					"position": "Bottom",
+					"alignment": "Center"
+				},
+				"plotArea": {
+                    "colorPalette": ["#00ff00", "#ff0000", "#0000ff"],
+					"dataLabel": {
+						"visible": true,
+                        "type": "value",
+						"showTotal": true
+					}
+				},
+				"title": {
+					"visible": false,
+                    "text": "teste"
+				},
+				"measureAxis": "size",
+				"dimensionAxis": "color",
+				"data": {
+					"json": {
+						"status": []
+					},
+					"path": "/status"
+				},
+				"dimensions": [{
+					"label": "Status",
+					"value": "{status}"
+				}],
+				"measures": [{
+					"label": "Quantidade",
+					"value": "{value}"
+				}]
+			}
+		}
+	}
+}

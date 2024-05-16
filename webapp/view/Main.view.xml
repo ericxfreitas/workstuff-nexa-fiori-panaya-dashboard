@@ -1,0 +1,73 @@
+<mvc:View controllerName="panaya.nexa.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:tnt="sap.tnt"
+    	xmlns:f="sap.f"
+	xmlns:w="sap.ui.integration.widgets"
+    xmlns="sap.m">
+    <Page id="page" title="" showHeader="true" > 
+        <headerContent>
+            <OverflowToolbarButton tooltip="Sair da Tela Cheia" type="Transparent" text="Tela Cheia" icon="sap-icon://exit-full-screen" press="onToggleScreen" visible="{= ${appView>/layout} === 'OneColumn'}"/> 
+            <OverflowToolbarButton tooltip="Tela Cheia" type="Transparent" text="Tela Cheia" icon="sap-icon://full-screen" press="onToggleScreen" visible="{= ${appView>/layout} === 'TwoColumnsMidExpanded'}"/> 
+        </headerContent>
+        <content >
+
+            <VBox justifyContent="Center">
+                 <!-- <HBox backgroundDesign="Solid" alignItems="Center" justifyContent="Center">
+                    <Label text="Acumulado até hoje:"></Label>
+                    <Switch></Switch>
+                </HBox> -->
+                <HBox
+                    justifyContent="SpaceAround"
+                    alignItems="Center"
+                    class="zheader"
+                    backgroundDesign="Solid"
+                >
+                    <VBox>
+                        <HBox backgroundDesign="Solid" alignItems="Center">
+                            <!-- <Label text="Acumulado até hoje:"></Label> -->
+                            <Title text="Acumulado até hoje"  titleStyle="H6"
+                        />
+                            <Switch state="{appView>/acumulated}" change="onChangeAccumulated"></Switch>
+                        </HBox>
+                        <Title class="sapUiMediumMarginTop" visible="{= ${appView>/acumulated} === false}"
+                            text="Due Date"
+                            titleStyle="H6"
+                        />
+                        <DatePicker id="dtDueDate" change="onChangeDate" visible="{= ${appView>/acumulated} === false}"/>
+                        <tnt:InfoLabel id="infoLastUpdate" text="Última atualização - Hoje ás {lastUpdatedTime}" colorScheme="1" displayOnly= "true" class="sapUiMediumMarginTop" />
+                    </VBox>
+                    <Image
+                        src="https://www.nexaresources.com/wp-content/uploads/2022/07/svg.svg"
+                        width="150px"
+                    />
+                </HBox>
+            </VBox>
+
+            <HBox justifyContent="SpaceAround" alignItems="Center" backgroundDesign="Solid" width="100%">
+                <VBox width="100%">
+                    <Title textAlign="Center" width="100%" text="Status Geral dos Steps" titleStyle="H3" class="sapUiSmallMarginBottom sapUiSmallMarginTop sapUiSmallMarginBegin"/>
+                    <w:Card action="onPressCard" id="generalStepsChart" manifest="{chartData>/general}" height="25rem"/>
+                </VBox>
+            </HBox>
+
+
+            <Title textAlign="Center" width="100%" text="Steps por Área" titleStyle="H2" class="sapUiSmallMarginBottom sapUiSmallMarginTop sapUiSmallMarginBegin"/>
+            <f:GridContainer id="gridContainer">
+                <f:layout>
+                    <f:GridContainerSettings rowSize="5rem" columnSize="3rem" gap="1rem" />
+                </f:layout>
+                <f:layoutS>
+                    <f:GridContainerSettings rowSize="5rem" columnSize="3rem" gap="0.5rem" />
+                </f:layoutS>
+
+                <!-- <w:Card manifest="{chartData>/general}">
+                    <w:layoutData>
+                        <f:GridContainerItemLayoutData rows="4" columns="12" />
+                    </w:layoutData>
+                </w:Card> -->
+
+            </f:GridContainer>
+
+        </content>
+    </Page>
+</mvc:View>

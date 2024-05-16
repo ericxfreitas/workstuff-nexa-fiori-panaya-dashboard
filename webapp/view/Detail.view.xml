@@ -1,0 +1,130 @@
+<mvc:View controllerName="panaya.nexa.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.ui.table"
+    xmlns:c="sap.ui.core"
+    xmlns:tnt="sap.tnt"
+	xmlns:m="sap.m" >
+    <m:Page id="page" title="Lista de Steps do dia - {appData>/currentDate}" showHeader="true" > 
+        <m:headerContent>
+            <m:OverflowToolbarButton tooltip="Sair da Tela Cheia" type="Transparent" text="Tela Cheia" icon="sap-icon://exit-full-screen" press="onToggleScreen" visible="{= ${appView>/layout} === 'MidColumnFullScreen'}"/> 
+            <m:OverflowToolbarButton tooltip="Tela Cheia" type="Transparent" text="Tela Cheia" icon="sap-icon://full-screen" press="onToggleScreen" visible="{= ${appView>/layout} === 'TwoColumnsMidExpanded'}"/> 
+        </m:headerContent>
+        <m:content>
+
+            <Table id="stepsTable" rowMode="Auto" threshold="100" rows="{path: '/steps',	parameters: {operationMode: 'Server'}, 
+            filters : [
+                        { path : 'dueDate', operator : 'EQ', value1 : 'accumulated'}
+                      ] 
+                   }"
+				selectionMode="None" fixedColumnCount="3" busyIndicatorDelay="0" busy="false">
+				<extension>
+					<m:OverflowToolbar style="Clear">
+                    <m:Label text="Status:"/>
+                        <m:Select change="onChangeStatus">
+                        <m:items>
+                                <c:Item key="Todos os Status" text="Todos os Status" />
+                                <c:Item key="Not Started" text="Not Started" />
+                                <c:Item key="Not Run" text="Not Run" />
+                                <c:Item key="Failed" text="Failed" />
+                                <c:Item key="Passed" text="Passed" />
+                                <c:Item key="In Progress" text="In Progress" />
+                                <c:Item key="Not Applicable" text="Not Applicable" />
+                        </m:items>
+                        </m:Select>
+                        <!-- <c:SeparatorItem/> -->
+                        <m:ToggleButton text="Apenas Steps com CoE" enabled="true" pressed="false" press="onPressOnlyCoe" />
+                        <m:ToggleButton text="Apenas Steps com Defeitos" enabled="true" pressed="false" press="onPressOnlyDefects" />
+						<m:Label text="Status do Defeito:" visible="{= ${appView>/showDefectStatus}}"/>
+                        <m:Select id="selectStatusDefct" change="onChangeDefectStatus" visible="{= ${appView>/showDefectStatus}}">
+                        <m:items>
+                                <c:Item key="Todos os Status" text="Todos os Status" />
+                                <c:Item key="Open" text="Open" />
+                                <c:Item key="Resolved" text="Resolved" />
+                                <c:Item key="Closed" text="Closed" />
+                        </m:items>
+                        </m:Select>
+					</m:OverflowToolbar>
+				</extension>
+				<columns>
+					<Column width="10rem" hAlign="Center">
+						<m:Label text="Status" />
+						<template>
+							<!-- <m:Text text="{status}" wrapping="false" /> -->
+                            <tnt:InfoLabel text="{status}" renderMode="Narrow" colorScheme="{= ${status} === 'Not Run' ? 1 : ${status} === 'In Progress' ? 6 : ${status} === 'Failed' ? 3 : 8}"/>
+						</template>
+					</Column>
+					<Column width="7rem" hAlign="Center" filterProperty="testId">
+						<m:Label text="Test ID" />
+						<template>
+                          <m:Link text="{testId}" target="_blank" href="https://my.panaya.com/site/rdx/44216/steps/list?filters=%7B%22testInScope%22:%221%22,%22cycle%22:%2281488%22,%22testId%22:%22{testId}%22%7D" />
+						</template>
+					</Column>
+					<Column width="5rem" hAlign="Center" filterProperty="testOrder">
+						<m:Label text="Ordem" />
+						<template>
+							<!-- <m:Text text="{testOrder}" wrapping="false" /> -->
+                            <m:Link text="{testOrder}" target="_blank" href="https://my.panaya.com/site/rdx/44216/steps/list?filters=%7B%22testInScope%22:%221%22,%22cycle%22:%2281488%22,%22testId%22:%22{testId}%22,%22orderIndex%22:%22%3E{testOrder},%3C{testOrder}%22%7D" />
+                            
+						</template>
+					</Column>
+					<Column width="11rem" filterProperty="name">
+						<m:Label text="Área" />
+						<template>
+							<m:Text text="{name}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="11rem" filterProperty="team">
+						<m:Label text="Team" />
+						<template>
+							<m:Text text="{team}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="11rem" filterProperty="description">
+						<m:Label text="Descrição" />
+						<template>
+							<m:Text text="{description}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="11rem" filterProperty="tester">
+						<m:Label text="tester" />
+						<template>
+							<m:Text text="{tester}" wrapping="false" />
+						</template>
+					</Column>
+					<Column width="11rem" filterProperty="path">
+						<m:Label text="Caminho" />
+						<template>
+							<m:Text text="{path}" wrapping="false" tooltip="{path}" />
+						</template>
+					</Column>
+					<Column width="5rem" filterProperty="defectId" hAlign="Center" >
+						<m:Label text="Defeito" />
+						<template>
+                            <m:Link text="{defectId}" target="_blank" href="https://my.panaya.com/site/rdx/44216/defects/details/{defectId}?newUiList=true" />
+						</template>
+					</Column>
+                    <Column width="11rem" hAlign="Center" >
+						<m:Label text="Status Defeito" />
+						<template>
+							<!-- <m:Text text="{defectStatus}" wrapping="false" tooltip="{defectStatus}" /> -->
+                            <tnt:InfoLabel text="{defectStatus}" renderMode="Narrow" colorScheme="{= ${defectStatus} === 'Open' ? 1 : ${defectStatus} === 'Resolved' ? 3 : 8}" visible="{= ${defectStatus} === '' ? false : true}"/>
+						</template>
+					</Column>
+					<Column width="5rem" filterProperty="blockingNext" hAlign="Center" >
+						<m:Label text="Bloq Próx Passo" />
+						<template>
+							<m:Text text="{blockingNext}" wrapping="false" tooltip="{blockingNext}" />
+						</template>
+					</Column>
+					<Column width="11rem" filterProperty="defectDesc" hAlign="Center" >
+						<m:Label text="Desc Defeito" />
+						<template>
+							<m:Text text="{defectDesc}" wrapping="false" tooltip="{defectDesc}" />
+						</template>
+					</Column>
+				</columns>
+			</Table>
+
+        </m:content>
+    </m:Page>
+</mvc:View>
